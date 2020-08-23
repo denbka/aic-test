@@ -1,18 +1,36 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <page-title>Список заметок</page-title>
+    <note-list
+    @delete-note="deleteNote"
+    :notes="notes">
+    </note-list>
+    <create-dialog
+    @add-note="addNote">
+    </create-dialog>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import PageTitle from '@/components/PageTitle'
+import CreateDialog from '@/components/NoteCardCreateDialog'
+import NoteList from '@/components/NoteList'
+import noteMixin from '@/mixins/noteMixin'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Home',
   components: {
-    HelloWorld
-  }
+    PageTitle,
+    NoteList,
+    CreateDialog
+  },
+  mixins: [ noteMixin ],
+  computed: {
+    ...mapGetters(['notes'])
+  },
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

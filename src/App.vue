@@ -1,32 +1,95 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="wrapper">
+      <router-view></router-view>
     </div>
-    <router-view/>
+    <ui-dialog
+    width="600px"
+    height="200px"
+    name="ActionDialog">
+    </ui-dialog>
   </div>
 </template>
 
+<script>
+import { mapGetters } from 'vuex'
+export default {
+  computed: {
+    ...mapGetters(['notes'])
+  },
+  mounted() {
+    this.setStoreData()
+  },
+  methods: {
+    setStoreData() {
+      const items = this.getDataFromLocalStorage()
+      if (!items) return
+      this.$store.commit('SET_ITEMS', items)
+    },
+    getDataFromLocalStorage() {
+      if (!localStorage.getItem('notes')) return
+      return JSON.parse(localStorage.getItem('notes'))
+    },
+  },
+}
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+
+@font-face {
+  font-family: 'TTNorms';
+  src: url('./assets/fonts/TTNorms-Medium.ttf');
+  font-weight: 400;
 }
 
-#nav {
-  padding: 30px;
+@font-face {
+  font-family: 'TTNorms';
+  src: url('./assets/fonts/TTNorms-Bold.ttf');
+  font-weight: 700;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+* {
+  box-sizing: border-box;
+}
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+body {
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(#F3F3FB, #FDFBFD);
+  line-height: 25px;
+}
+
+#app, button, input {
+  font-family: 'TTNorms', sans-serif;
+  font-size: 18px;
+}
+#app {
+  min-height: 100vh;
+
+  .wrapper {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 50px;
   }
 }
+
+h1,h2,h3,h4 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+ul, ol {
+  padding: 0;
+  margin: 0
+}
+
+ol {
+  margin-left: 20px;
+}
+
+ul {
+  list-style-type: none;
+}
+
 </style>
